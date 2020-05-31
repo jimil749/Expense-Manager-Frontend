@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import MainPage from './Components/MainPage'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory,
 } from "react-router-dom";
 import SignIn from './Components/SignIn'
 import AppBar from '@material-ui/core/AppBar'
@@ -14,7 +15,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import SignUp from './Components/SignUp'
-
+import loginService from './Services/login'
+import userService from './Services/signup'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +30,56 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const classes = useStyles()
+  const classes = useStyles() 
+  let history = useHistory()
+  
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+  const [name, setName] = useState()
+  const [user, setUser] = useState()
+
+  const handleUsername = value => {
+    setUsername(value)
+  }
+
+  const handlePassword = value => {
+    setPassword(value)
+  }
+
+  const handleName = value => {
+    setName(value)
+  }
+
+  const handleLogin = async event => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username, password
+      })
+      alert('User Verified!')
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch(exception) {
+      alert('Invalid Credentials')
+      console.log(exception)
+    }
+  }
+
+  const handleSignUp = async event => {
+    event.preventDefault()
+    try {
+      await userService.signup({
+        username, name, password
+      })
+      alert('Account Created Succesfully! Login to get started')
+      history.push('/signin')
+    } catch (exception) {
+      alert('Error adding user')
+      console.log(exception)
+    }
+  }
+
 
   return (
     <div className="App">
@@ -47,10 +98,24 @@ function App() {
       </AppBar>      
           <Switch>
             <Route path = '/signin'>
-              <SignIn />
+              <SignIn 
+                username={username}
+                password={password}
+                handlePassword={handlePassword}
+                handleUsername={handleUsername}
+                handleLogin={handleLogin}
+              />
             </Route>
             <Route path = '/signup'>
-              <SignUp />
+              <SignUp
+                username={username}
+                name={name} 
+                password={password}
+                handleName={handleName}
+                handlePassword={handlePassword}
+                handleUsername={handleUsername}
+                handleSignUp={handleSignUp}
+              />
             </Route>
             <Route path = '/'>
               <MainPage />

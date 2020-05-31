@@ -49,7 +49,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SignIn = () => {
+const SignIn = ({
+  username,
+  password,
+  handleUsername,
+  handlePassword,
+  handleLogin
+}) => {
 
   let history = useHistory()
 
@@ -58,7 +64,6 @@ const SignIn = () => {
   }
 
   const classes = useStyles();
-  console.log('in signin')
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -69,16 +74,18 @@ const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign In To Expense-Manager
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit = {handleLogin}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="username"
+            value={username}
             label="Username"
             name="username"            
             autoFocus
+            onChange={({ target }) => handleUsername(target.value)}
           />
           <TextField
             variant="outlined"
@@ -86,10 +93,11 @@ const SignIn = () => {
             required
             fullWidth
             name="password"
+            value={password}
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
+            onChange={({ target }) => handlePassword(target.value)}
           />
           <Button
             type="submit"

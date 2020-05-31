@@ -29,7 +29,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = () => {
+const SignUp = ({
+  username,
+  name,
+  password,
+  handleUsername,
+  handlePassword,
+  handleName,
+  handleSignUp
+}) => {
 
   const classes = useStyles();
 
@@ -43,16 +51,18 @@ const SignUp = () => {
         <Typography component="h1" variant="h5">
           Sign Up to get Started!
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSignUp}>
           <TextField
             variant="outlined"
             margin="normal"
+            value={username}
             required
             fullWidth
             id="username"
             label="Username"
             name="username"            
             autoFocus
+            onChange={({ target }) => handleUsername(target.value)}
           />
 
           <TextField
@@ -62,7 +72,8 @@ const SignUp = () => {
             fullWidth
             id="name"
             label="Name"
-            name="name"            
+            name="name"   
+            onChange={({ target }) => handleName(target.value)}         
           />
 
           <TextField
@@ -75,6 +86,7 @@ const SignUp = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={({ target }) => handlePassword(target.value)}
           />
           <Button
             type="submit"
