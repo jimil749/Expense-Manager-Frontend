@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 
   const classes = useStyles() 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState(null)
   
   useEffect(()=> {
     const loggedUserJson = window.localStorage.getItem('loggedUser')
@@ -46,21 +46,41 @@ function App() {
     setUser(value)
   }
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
+  }
+
   return (
     <div className="App">
       <Router>
-        <AppBar color='primary' position = 'sticky' title = 'Expense Manager'>
-        <Toolbar>   
-          <Typography variant="h6" className = {classes.header} >
-            <a href = "/" >
-              Expense Manager
-            </a>
-          </Typography>   
-          <Button color = 'inherit' className = {classes.button} size = 'large' >          
-              <Link to = '/signin'> Login </Link>          
-          </Button>  
-        </Toolbar>
-      </AppBar>      
+        {user !== null ? 
+          <AppBar color='primary' position = 'sticky' title = 'Expense Manager'>
+          <Toolbar>   
+            <Typography variant="h6" className = {classes.header} >
+              <a href = "/" >
+                Expense Manager
+              </a>
+            </Typography>   
+            <Button color = 'inherit' className = {classes.button} size = 'large' onClick = {handleLogout}>          
+                <Link to = '/'> Logout  </Link>        
+            </Button>  
+          </Toolbar>
+          </AppBar> 
+        :
+          <AppBar color='primary' position = 'sticky' title = 'Expense Manager'>
+          <Toolbar>   
+            <Typography variant="h6" className = {classes.header} >
+              <a href = "/" >
+                Expense Manager
+              </a>
+            </Typography>   
+            <Button color = 'inherit' className = {classes.button} size = 'large' >          
+                <Link to = '/signin'> Login </Link>          
+            </Button>  
+          </Toolbar>
+          </AppBar>
+        }      
           <Switch>
             <Route path = '/signin'>
               <SignIn 
@@ -74,7 +94,7 @@ function App() {
               <UserPage />
             </Route>
             <Route exact path = "/">
-              {user !== undefined ? <Redirect to="/dashboard" /> : <MainPage />}
+              {user !== null ? <Redirect to="/dashboard" /> : <MainPage />}
             </Route>           
           </Switch>
       </Router>
