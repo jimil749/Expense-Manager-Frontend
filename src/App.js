@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+
+
 function App() {
 
   const classes = useStyles() 
@@ -91,7 +93,7 @@ function App() {
               <SignUp />
             </Route>
             <Route path = '/dashboard'>
-              <UserPage />
+              {user !== null ? <UserPage /> : <Redirect to="/signin" />}
             </Route>
             <Route exact path = "/">
               {user !== null ? <Redirect to="/dashboard" /> : <MainPage />}
