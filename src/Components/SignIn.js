@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom'
+import expenseService from '../Services/expense'
+import loginService from '../Services/login'
 
 
 function Copyright() {
@@ -49,15 +51,44 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SignIn = ({
-  username,
-  password,
-  handleUsername,
-  handlePassword,
-  handleLogin
-}) => {
+const SignIn = ({ handleUser }) => {
 
   let history = useHistory()
+
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+
+  const handleUsername = value => {
+    setUsername(value)
+  }
+
+  const handlePassword = value => {
+    setPassword(value)
+  }
+  
+  const handleLogin = async event => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username, password
+      })
+
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
+
+      expenseService.setToken(user.token)
+      alert('User Verified!')      
+      handleUser(user)
+      setUsername('')
+      setPassword('')
+      history.push('/')
+      
+    } catch(exception) {
+      alert('Invalid Credentials')
+      console.log(exception)
+    }
+  }
 
   const handleClick = () => {
     history.push('/signup')

@@ -1,5 +1,9 @@
 a {
-  color: black;
+  color: white;
   text-decoration: none;
+}
+
+a:hover {
+  color: darkslategray;
 }
 

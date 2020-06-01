@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +7,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import userService from '../Services/signup'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,17 +30,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({
-  username,
-  name,
-  password,
-  handleUsername,
-  handlePassword,
-  handleName,
-  handleSignUp
-}) => {
+const SignUp = () => {
 
   const classes = useStyles();
+  const [name, setName] = useState()
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+
+
+  const handleSignUp = async event => {
+    event.preventDefault()
+    try {
+      await userService.signup({
+        username, name, password
+      })
+      alert('Account Created Succesfully! Login to get started')
+    } catch (exception) {
+      alert('Error adding user')
+      console.log(exception)
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -58,11 +68,12 @@ const SignUp = ({
             value={username}
             required
             fullWidth
+
             id="username"
             label="Username"
             name="username"            
             autoFocus
-            onChange={({ target }) => handleUsername(target.value)}
+            onChange={({ target }) => setUsername(target.value)}
           />
 
           <TextField
@@ -73,7 +84,7 @@ const SignUp = ({
             id="name"
             label="Name"
             name="name"   
-            onChange={({ target }) => handleName(target.value)}         
+            onChange={({ target }) => setName(target.value)}         
           />
 
           <TextField
@@ -86,7 +97,7 @@ const SignUp = ({
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={({ target }) => handlePassword(target.value)}
+            onChange={({ target }) => setPassword(target.value)}
           />
           <Button
             type="submit"

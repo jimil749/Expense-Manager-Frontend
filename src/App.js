@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainPage from './Components/MainPage'
 import {
@@ -6,7 +6,7 @@ import {
   Switch,
   Route,
   Link,
-  useHistory,
+  Redirect
 } from "react-router-dom";
 import SignIn from './Components/SignIn'
 import AppBar from '@material-ui/core/AppBar'
@@ -15,8 +15,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import SignUp from './Components/SignUp'
-import loginService from './Services/login'
-import userService from './Services/signup'
+import expenseService from './Services/expense'
+import UserPage from './Components/UserPage'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,55 +31,20 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 
   const classes = useStyles() 
-  let history = useHistory()
-  
-  const [username, setUsername] = useState()
-  const [password, setPassword] = useState()
-  const [name, setName] = useState()
   const [user, setUser] = useState()
-
-  const handleUsername = value => {
-    setUsername(value)
-  }
-
-  const handlePassword = value => {
-    setPassword(value)
-  }
-
-  const handleName = value => {
-    setName(value)
-  }
-
-  const handleLogin = async event => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username, password
-      })
-      alert('User Verified!')
+  
+  useEffect(()=> {
+    const loggedUserJson = window.localStorage.getItem('loggedUser')
+    if (loggedUserJson) {
+      const user = JSON.parse(loggedUserJson)
+      expenseService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch(exception) {
-      alert('Invalid Credentials')
-      console.log(exception)
     }
-  }
+  }, [])
 
-  const handleSignUp = async event => {
-    event.preventDefault()
-    try {
-      await userService.signup({
-        username, name, password
-      })
-      alert('Account Created Succesfully! Login to get started')
-      history.push('/signin')
-    } catch (exception) {
-      alert('Error adding user')
-      console.log(exception)
-    }
+  const handleUser = value => {
+    setUser(value)
   }
-
 
   return (
     <div className="App">
@@ -99,27 +64,18 @@ function App() {
           <Switch>
             <Route path = '/signin'>
               <SignIn 
-                username={username}
-                password={password}
-                handlePassword={handlePassword}
-                handleUsername={handleUsername}
-                handleLogin={handleLogin}
+                handleUser={handleUser}
               />
             </Route>
             <Route path = '/signup'>
-              <SignUp
-                username={username}
-                name={name} 
-                password={password}
-                handleName={handleName}
-                handlePassword={handlePassword}
-                handleUsername={handleUsername}
-                handleSignUp={handleSignUp}
-              />
+              <SignUp />
             </Route>
-            <Route path = '/'>
-              <MainPage />
-            </Route>            
+            <Route path = '/dashboard'>
+              <UserPage />
+            </Route>
+            <Route exact path = "/">
+              {user !== undefined ? <Redirect to="/dashboard" /> : <MainPage />}
+            </Route>           
           </Switch>
       </Router>
     </div>
