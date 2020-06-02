@@ -15,4 +15,12 @@ const getAll = async () => {
     return response.data
 }
 
-export default { getAll, setToken }
+const monthPreview = async() => {
+    const config = {
+        headers: {Authorization: token}        
+    }
+    const response = await axios.get(`${baseUrl}preview`, config)
+    return response.data
+}
+
+export default { getAll, setToken, monthPreview }

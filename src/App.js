@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import SignUp from './Components/SignUp'
 import expenseService from './Services/expense'
-import UserPage from './Components/UserPage'
+import Dashboard from './Components/Dashboard'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +93,7 @@ function App() {
               <SignUp />
             </Route>
             <Route path = '/dashboard'>
-              {user !== null ? <UserPage /> : <Redirect to="/signin" />}
+              {user !== null ? <Dashboard user = {user} /> : <Redirect to="/signin" />}
             </Route>
             <Route exact path = "/">
               {user !== null ? <Redirect to="/dashboard" /> : <MainPage />}
