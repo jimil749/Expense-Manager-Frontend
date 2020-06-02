@@ -21,7 +21,7 @@ import Dashboard from './Components/Dashboard'
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    marginLeft: 1300
+    marginLeft: 1100
   },
   header: {
     marginLeft: 50,    
@@ -59,13 +59,16 @@ function App() {
         {user !== null ? 
           <AppBar color='primary' position = 'sticky' title = 'Expense Manager'>
           <Toolbar>   
-            <Typography variant="h6" className = {classes.header} >
+            <Button className = {classes.header} size='large'>
               <a href = "/" >
                 Expense Manager
               </a>
-            </Typography>   
+            </Button>  
+            <Button color='inherit' size='large'>
+              EXPENSES  
+            </Button> 
             <Button color = 'inherit' className = {classes.button} size = 'large' onClick = {handleLogout}>          
-                <Link to = '/'> Logout  </Link>        
+                <Link to = '/'> LOGOUT  </Link>        
             </Button>  
           </Toolbar>
           </AppBar> 

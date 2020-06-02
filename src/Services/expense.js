@@ -23,4 +23,12 @@ const monthPreview = async() => {
     return response.data
 }
 
-export default { getAll, setToken, monthPreview }
+const categoryPreview = async() => {
+    const config = {
+        headers: {Authorization: token}
+    }
+    const response = await axios.get(`${baseUrl}category/preview`, config)
+    return response.data
+}
+
+export default { getAll, setToken, monthPreview, categoryPreview }

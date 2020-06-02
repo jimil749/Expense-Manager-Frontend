@@ -38,6 +38,33 @@ const useStyles = makeStyles(theme => ({
         fontSize: '0.9em',
         fontStyle: 'italic',
         color: '#696969'
+    },
+    categorySection: {
+        padding: 25,
+        paddingTop: 16,
+        margin: 'auton'
+    },
+    categoryDivider: {
+        height: '4px',
+        margin: '0px',
+        marginBottom: 8
+    },
+    val: {
+        width: 200,
+        display: 'inline-table',
+        textAlign: 'center',
+        margin: 2
+    },
+    categoryTitle: {
+        display: 'inline-block',
+        padding: 10,
+        backgroundColor: '#f4f6f9',
+    },
+    catHeading: {
+        color: '#6b6b6b',
+        fontSize: '1.15em',
+        backgroundColor: '#f7f7f7',
+        padding: '4px 0'
     }
 }))
 
@@ -45,17 +72,52 @@ const Dashboard = ({ user }) => {
 
     const classes = useStyles()
     const [expensePreview, setExpensePreview] = useState({month: 0, today: 0, yesterday: 0})
+    const [expenseCategory, setExepenseCategory] = useState([])
 
     useEffect(() => {
         if (user.token) {
             expenseService.setToken(user.token)
             async function getPreview() {
-                const response = await expenseService.monthPreview()
-                setExpensePreview(response)
+                try {
+                    const response = await expenseService.monthPreview()
+                    setExpensePreview(response)
+    
+                } catch(exceptions) {
+                    console.log(exceptions)
+                    alert(`Error fetching data`)
+                }
             }
             getPreview()
         }
     }, [])
+
+    useEffect(() => {
+        if (user.token) {
+            expenseService.setToken(user.token)
+            async function getPreview() {
+                try {
+                    const response = await expenseService.categoryPreview()
+                    setExepenseCategory(response)
+                } catch(exceptions) {
+                    console.log(exceptions)
+                    alert(`Error fetching data`)
+                }                
+            }
+            getPreview()
+        }
+    }, [])
+
+    const indicateExpense = (value) => {
+        let color = "#4f83cc"
+        if (value.total) {
+            const diff = value.total-value.average
+            if (diff > 0)
+                color = '#e9858b'
+            if (diff < 0)
+                color = '#2bbd7e'
+        }
+        return color
+    }
 
     return (
         <div>
@@ -78,6 +140,27 @@ const Dashboard = ({ user }) => {
                     </div>
                 </div>
                 <Divider />
+                <div className={classes.categorySection}>
+                    {expenseCategory.map((expense, index) => {
+                        return(
+                            <div key={index} style={{display: 'grid', justifyContent: 'center'}}>
+                                <Typography variant="h5" className={classes.categoryTitle}>{expense._id}</Typography>
+                                <Divider className={classes.categoryDivider} style={{backgroundColor: indicateExpense(expense.mergedValues)}}/>
+                                <div>
+                                    <Typography component="span" className={`${classes.catHeading} ${classes.val}`}>past average</Typography>
+                                    <Typography component="span" className={`${classes.catHeading} ${classes.val}`}>this month</Typography>
+                                    <Typography component="span" className={`${classes.catHeading} ${classes.val}`}>{expense.mergedValues.total && expense.mergedValues.total-expense.mergedValues.average > 0 ? "spent extra" : "saved"}</Typography>                                    
+                                </div>
+                                <div style={{marginBottom: 3}}>
+                                    <Typography component="span" className={classes.val} style={{color:'#595555', fontSize:'1.15em'}}>${expense.mergedValues.average}</Typography>
+                                    <Typography component="span" className={classes.val} style={{color:'#002f6c', fontSize:'1.6em', backgroundColor: '#eafff5', padding: '8px 0'}}>${expense.mergedValues.total? expense.mergedValues.total : 0}</Typography>
+                                    <Typography component="span" className={classes.val} style={{color:'#484646', fontSize:'1.25em'}}>${expense.mergedValues.total? Math.abs(expense.mergedValues.total-expense.mergedValues.average) : expense.mergedValues.average}</Typography>
+                                </div>
+                            <Divider style={{marginBottom:10}}/>                                
+                            </div>
+                        )
+                    })}
+                </div>
             </Card> 
         </div>
     )
