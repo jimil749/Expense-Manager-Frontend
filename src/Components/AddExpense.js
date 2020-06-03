@@ -79,6 +79,7 @@ const AddExpense = () => {
         try {
             const response = await expenseService.addExpense(expense)
             setValues({...values, redirect: true})
+            alert('expense added!')
         } catch(exception) {
             console.log(exception)
             alert(`Error adding!!`)

@@ -19,6 +19,7 @@ import SignUp from './Components/SignUp'
 import expenseService from './Services/expense'
 import Dashboard from './Components/Dashboard'
 import AddExpense from './Components/AddExpense'
+import Expenses from './Components/Expenses'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +74,7 @@ function App() {
               </a>
             </Button>  
             <Button color='inherit' size='large'>
-              EXPENSES  
+              <Link to = '/all'>EXPENSES</Link>  
             </Button> 
             <Button color='default' variant='contained' className={classes.addButton} startIcon={<AddIcon />}>
               <Link to = '/add' className={classes.buttonLink}> ADD EXPENSES </Link>
@@ -109,6 +110,9 @@ function App() {
             <Route path = '/dashboard'>              
               {/* {user !== null ?  <Dashboard  /> : <Redirect to="/signin" />} */}
               <Dashboard />
+            </Route>
+            <Route  path = '/all'>
+              <Expenses />
             </Route>
             <Route path='/add'>
               <AddExpense />
