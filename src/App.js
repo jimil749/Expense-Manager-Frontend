@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
   addButton: {
     marginLeft: 10
+  },
+  buttonLink: {
+    color: 'darkslategray'
   }
 }))
 
@@ -73,7 +76,7 @@ function App() {
               EXPENSES  
             </Button> 
             <Button color='default' variant='contained' className={classes.addButton} startIcon={<AddIcon />}>
-              <Link to = '/add'> ADD EXPENSES </Link>
+              <Link to = '/add' className={classes.buttonLink}> ADD EXPENSES </Link>
             </Button>
             <Button color = 'inherit' className = {classes.button} size = 'large' onClick = {handleLogout}>          
                 <Link to = '/'> LOGOUT  </Link>        

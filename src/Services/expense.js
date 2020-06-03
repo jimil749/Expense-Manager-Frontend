@@ -31,4 +31,12 @@ const categoryPreview = async() => {
     return response.data
 }
 
-export default { getAll, setToken, monthPreview, categoryPreview }
+const addExpense = async(data) => {
+    const config = {
+        headers: {Authorization: token}
+    }
+    const response = await axios.post(`${baseUrl}`, data, config)
+    return response.data
+}
+
+export default { getAll, setToken, monthPreview, categoryPreview, addExpense }

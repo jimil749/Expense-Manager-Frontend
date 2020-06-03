@@ -79,7 +79,6 @@ const Dashboard = () => {
     const [expenseCategory, setExepenseCategory] = useState([])
 
     useEffect(() => {
-        console.log('hii')
         const loggedUserJson = window.localStorage.getItem('loggedUser')
         const user = JSON.parse(loggedUserJson)
         if (user.token) {
