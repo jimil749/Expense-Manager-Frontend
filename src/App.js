@@ -13,18 +13,23 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import AddIcon from '@material-ui/icons/Add'
 import { makeStyles } from '@material-ui/core/styles'
 import SignUp from './Components/SignUp'
 import expenseService from './Services/expense'
 import Dashboard from './Components/Dashboard'
+import AddExpense from './Components/AddExpense'
 
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    marginLeft: 1100
+    marginLeft: 900
   },
   header: {
     marginLeft: 50,    
+  },
+  addButton: {
+    marginLeft: 10
   }
 }))
 
@@ -40,7 +45,7 @@ function App() {
     if (loggedUserJson) {
       const user = JSON.parse(loggedUserJson)
       expenseService.setToken(user.token)
-      setUser(user)
+      setUser(user)               
     }
   }, [])
 
@@ -67,6 +72,9 @@ function App() {
             <Button color='inherit' size='large'>
               EXPENSES  
             </Button> 
+            <Button color='default' variant='contained' className={classes.addButton} startIcon={<AddIcon />}>
+              <Link to = '/add'> ADD EXPENSES </Link>
+            </Button>
             <Button color = 'inherit' className = {classes.button} size = 'large' onClick = {handleLogout}>          
                 <Link to = '/'> LOGOUT  </Link>        
             </Button>  
@@ -95,10 +103,14 @@ function App() {
             <Route path = '/signup'>
               <SignUp />
             </Route>
-            <Route path = '/dashboard'>
-              {user !== null ? <Dashboard user = {user} /> : <Redirect to="/signin" />}
+            <Route path = '/dashboard'>              
+              {/* {user !== null ?  <Dashboard  /> : <Redirect to="/signin" />} */}
+              <Dashboard />
             </Route>
-            <Route exact path = "/">
+            <Route path='/add'>
+              <AddExpense />
+            </Route>
+            <Route exact path = "/">              
               {user !== null ? <Redirect to="/dashboard" /> : <MainPage />}
             </Route>           
           </Switch>

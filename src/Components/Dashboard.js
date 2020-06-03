@@ -4,6 +4,7 @@ import Divider from '@material-ui/core/Divider'
 import expenseService from '../Services/expense'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -65,16 +66,22 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1.15em',
         backgroundColor: '#f7f7f7',
         padding: '4px 0'
+    },
+    see: {
+        color: 'black'
     }
 }))
 
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
 
     const classes = useStyles()
     const [expensePreview, setExpensePreview] = useState({month: 0, today: 0, yesterday: 0})
     const [expenseCategory, setExepenseCategory] = useState([])
 
     useEffect(() => {
+        console.log('hii')
+        const loggedUserJson = window.localStorage.getItem('loggedUser')
+        const user = JSON.parse(loggedUserJson)
         if (user.token) {
             expenseService.setToken(user.token)
             async function getPreview() {
@@ -88,10 +95,12 @@ const Dashboard = ({ user }) => {
                 }
             }
             getPreview()
-        }
+        } 
     }, [])
 
     useEffect(() => {
+        const loggedUserJson = window.localStorage.getItem('loggedUser')
+        const user = JSON.parse(loggedUserJson)        
         if (user.token) {
             expenseService.setToken(user.token)
             async function getPreview() {
@@ -137,6 +146,7 @@ const Dashboard = ({ user }) => {
                             ${expensePreview.yesterday ? expensePreview.yesterday.totalSpent : '0'}
                             <span className={classes.day}> yesterday</span>
                         </Typography>
+                        <Link to="/expenses/all"><Typography variant="h6" className={classes.see}>See more</Typography></Link>
                     </div>
                 </div>
                 <Divider />
