@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import Edit from '@material-ui/icons/Edit'
 import expenseService from '../Services/expense'
-import { ExpansionPanel, ExpansionPanelSummary } from '@material-ui/core'
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
 import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 
@@ -53,6 +53,12 @@ const useStyles = makeStyles(theme =>({
     textField: {
         margin: '8px 16px',
         width: 240
+    },
+    button: {
+        textAlign: 'right'
+    },
+    submit: {
+        
     }
 }))
 
@@ -144,8 +150,30 @@ const Expenses = () => {
                                 <Typography className={classes.notes}>{expense.notes}</Typography>
                             </div>
                         </ExpansionPanelSummary>
-                        <Divider />
-                    </ExpansionPanel >                    
+                        <Divider />                    
+                        <ExpansionPanelDetails style={{display: 'block'}}>
+                            <div>
+                                <TextField label="Title" className={classes.textField} value={expense.title} margin='normal' />
+                                <TextField label="Amount" className={classes.textField} value={expense.amount} margin='normal' type="number"/>
+                            </div>
+                            <div>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <DateTimePicker 
+                                        label="Date"
+                                        className={classes.textField}
+                                        views={["year", "month", "date"]}
+                                        value={expense.date}
+                                        showTodayButton
+                                    />
+                                </MuiPickersUtilsProvider>
+                                <TextField label="Category" className={classes.textField} value={expense.category} margin="normal"/>                            
+                            </div>
+                            <TextField label="Notes" multiline rows="2" className={classes.textField} value={expense.notes} margin="normal"/>
+                            <div className={classes.button}>
+                                <Button color='primary' variant="contained" className={classes.submit}> Update </Button>
+                            </div>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>             
                 </span>
                 )
             })}
