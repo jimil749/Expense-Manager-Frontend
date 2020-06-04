@@ -1,4 +1,6 @@
 import axios from 'axios'
+import queryString from 'query-string'
+
 const baseUrl = '/api/expenses/'
 
 let token = null
@@ -7,11 +9,12 @@ const setToken = newToken => {
     token = `bearer ${newToken}`
 }
 
-const getAll = async () => {  
+const getAll = async (params) => {  
+    const query = queryString.stringify(params)
     const config = {
         headers: {Authorization: token},
     }
-    const response = await axios.get(baseUrl, config)
+    const response = await axios.get(`${baseUrl}?${query}`, config)
     return response.data
 }
 

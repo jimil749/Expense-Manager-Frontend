@@ -145,7 +145,7 @@ const Dashboard = () => {
                             ${expensePreview.yesterday ? expensePreview.yesterday.totalSpent : '0'}
                             <span className={classes.day}> yesterday</span>
                         </Typography>
-                        <Link to="/expenses/all"><Typography variant="h6" className={classes.see}>See more</Typography></Link>
+                        <Link to="/all"><Typography variant="h6" className={classes.see}>See more</Typography></Link>
                     </div>
                 </div>
                 <Divider />

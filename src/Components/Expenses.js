@@ -8,6 +8,8 @@ import Icon from '@material-ui/core/Icon'
 import Edit from '@material-ui/icons/Edit'
 import expenseService from '../Services/expense'
 import { ExpansionPanel, ExpansionPanelSummary } from '@material-ui/core'
+import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
 
 const useStyles = makeStyles(theme =>({
     root: {
@@ -42,11 +44,25 @@ const useStyles = makeStyles(theme =>({
     },
     notes: {
         color: 'grey'
+    },
+    search: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    textField: {
+        margin: '8px 16px',
+        width: 240
     }
 }))
 
 const Expenses = () => {
     const classes = useStyles()
+    const date = new Date()
+    const y = date.getFullYear()
+    const m = date.getMonth()
+    const [firstDay, setfirstDay] = useState(new Date(y,m,1))
+    const [lastDay, setlastDay] = useState(new Date(y, m+1, 1))
     const [expenses, setExpenses] = useState([])
 
     useEffect(() => {
@@ -55,7 +71,7 @@ const Expenses = () => {
         expenseService.setToken(user.token)        
         try{
             async function getResponse() {
-                const response = await expenseService.getAll()                
+                const response = await expenseService.getAll({firstDay: firstDay, lastDay: lastDay})                
                 setExpenses(response)
             }
             getResponse()
@@ -65,8 +81,51 @@ const Expenses = () => {
         }
     }, [])
 
+    const handleSearchFieldChange = name => date => {
+        if (name === 'firstDay') {
+            setfirstDay(date)
+        } else {
+            setlastDay(date)
+        }
+    }
+
+    const handleSearch = () => {
+        try{
+            async function getResponse() {
+                const response = await expenseService.getAll({firstDay: firstDay, lastDay: lastDay})                
+                setExpenses(response)
+            }
+            getResponse()
+        } catch (exception) {
+            console.log(exception)
+            alert('Error fetching')
+        }
+    }
+
     return (
         <div className={classes.root}>
+            <div className={classes.search}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                        disableFuture
+                        format="dd/MM/yyyy"
+                        label="SHOWING RECORDS FROM"
+                        className={classes.textField}
+                        views={["year", "month", "date"]}
+                        value={firstDay}
+                        onChange={handleSearchFieldChange('firstDay')}
+                    />
+                    <DatePicker
+                        format="dd/MM/yyyy"
+                        label="TO"
+                        className={classes.textField}
+                        views={["year", "month", "date"]}
+                        value={lastDay}
+                        onChange={handleSearchFieldChange('lastDay')}
+                    />                    
+                </MuiPickersUtilsProvider>
+                <Button variant="contained" color="secondary" onClick={handleSearch}>GO</Button>
+            </div>
             {expenses.map((expense, index) => {
                 return (
                 <span key={index}>
@@ -85,6 +144,7 @@ const Expenses = () => {
                                 <Typography className={classes.notes}>{expense.notes}</Typography>
                             </div>
                         </ExpansionPanelSummary>
+                        <Divider />
                     </ExpansionPanel >                    
                 </span>
                 )
