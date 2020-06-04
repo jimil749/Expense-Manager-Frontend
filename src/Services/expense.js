@@ -42,4 +42,19 @@ const addExpense = async(data) => {
     return response.data
 }
 
-export default { getAll, setToken, monthPreview, categoryPreview, addExpense }
+const updateExpense = async(params, data) => {
+    const config = {
+        headers: {Authorization: token}        
+    }
+    const response = await axios.put(`${baseUrl}/${params.id}`, data, config)
+    return response.data
+}
+
+export default { 
+    getAll, 
+    setToken, 
+    monthPreview, 
+    categoryPreview, 
+    addExpense,
+    updateExpense
+}

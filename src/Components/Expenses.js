@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme =>({
         textAlign: 'right'
     },
     submit: {
-        
+
     }
 }))
 
@@ -107,6 +107,8 @@ const Expenses = () => {
             alert('Error fetching')
         }
     }
+
+    
 
     return (
         <div className={classes.root}>
