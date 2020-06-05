@@ -43,10 +43,11 @@ const addExpense = async(data) => {
 }
 
 const updateExpense = async(params, data) => {
+    console.log(params)
     const config = {
         headers: {Authorization: token}        
     }
-    const response = await axios.put(`${baseUrl}/${params.id}`, data, config)
+    const response = await axios.put(`${baseUrl}/${params.expenseId}`, data, config)
     return response.data
 }
 

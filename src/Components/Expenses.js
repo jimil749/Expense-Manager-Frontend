@@ -107,8 +107,33 @@ const Expenses = () => {
             alert('Error fetching')
         }
     }
-
     
+    const handleChange = (name, index) => event => {
+        console.log('in here')
+        const updatedExpenses = [...expenses]
+        updatedExpenses[index][name] = event.target.value
+        setExpenses(updatedExpenses)
+    }
+
+    const handleUpdate = async index => {
+        let expense = expenses[index]        
+        try{ 
+            const response = await expenseService.updateExpense({
+                expenseId: expense.id
+            }, expense)
+        } catch(err) {
+            console.log(err)
+            alert('error updating, retry!')
+        }
+    }
+
+    const handleDateChange = index => date => {
+        console.log('in date change')
+        const updatedExpenses = [...expenses]
+        updatedExpenses[index].date = date
+        setExpenses(updatedExpenses)
+    }
+
 
     return (
         <div className={classes.root}>
@@ -155,8 +180,8 @@ const Expenses = () => {
                         <Divider />                    
                         <ExpansionPanelDetails style={{display: 'block'}}>
                             <div>
-                                <TextField label="Title" className={classes.textField} value={expense.title} margin='normal' />
-                                <TextField label="Amount" className={classes.textField} value={expense.amount} margin='normal' type="number"/>
+                                <TextField label="Title" className={classes.textField} value={expense.title} onChange={handleChange('title', index)} margin='normal' />
+                                <TextField label="Amount" className={classes.textField} value={expense.amount} onChange={handleChange('amount', index)} margin='normal' type="number"/>
                             </div>
                             <div>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -165,14 +190,15 @@ const Expenses = () => {
                                         className={classes.textField}
                                         views={["year", "month", "date"]}
                                         value={expense.date}
+                                        onChange={handleDateChange(index)}
                                         showTodayButton
                                     />
                                 </MuiPickersUtilsProvider>
-                                <TextField label="Category" className={classes.textField} value={expense.category} margin="normal"/>                            
+                                <TextField label="Category" className={classes.textField} value={expense.category} onChange={handleChange('category', index)} margin="normal"/>                            
                             </div>
-                            <TextField label="Notes" multiline rows="2" className={classes.textField} value={expense.notes} margin="normal"/>
+                            <TextField label="Notes" multiline rows="2" className={classes.textField} value={expense.notes} onChange={handleChange('notes', index)} margin="normal"/>
                             <div className={classes.button}>
-                                <Button color='primary' variant="contained" className={classes.submit}> Update </Button>
+                                <Button color='primary' variant="contained" onClick={() => handleUpdate(index)}className={classes.submit}> Update </Button>
                             </div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>             
