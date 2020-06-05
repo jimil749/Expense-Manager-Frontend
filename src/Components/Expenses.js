@@ -4,12 +4,12 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Icon from '@material-ui/core/Icon'
 import Edit from '@material-ui/icons/Edit'
 import expenseService from '../Services/expense'
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
 import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
+import DeleteExpense from './DeleteExpense'
 
 const useStyles = makeStyles(theme =>({
     root: {
@@ -109,7 +109,6 @@ const Expenses = () => {
     }
     
     const handleChange = (name, index) => event => {
-        console.log('in here')
         const updatedExpenses = [...expenses]
         updatedExpenses[index][name] = event.target.value
         setExpenses(updatedExpenses)
@@ -199,6 +198,7 @@ const Expenses = () => {
                             <TextField label="Notes" multiline rows="2" className={classes.textField} value={expense.notes} onChange={handleChange('notes', index)} margin="normal"/>
                             <div className={classes.button}>
                                 <Button color='primary' variant="contained" onClick={() => handleUpdate(index)}className={classes.submit}> Update </Button>
+                                <DeleteExpense />
                             </div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>             
