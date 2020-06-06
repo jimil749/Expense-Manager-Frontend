@@ -50,12 +50,20 @@ const updateExpense = async(params, data) => {
     return response.data
 }
 
-const deleteExpense = async(params, data) => {
-    console.log(params)
+const deleteExpense = async(params) => {    
     const config = {
         headers: {Authorization: token}        
     }
     const response = await axios.delete(`${baseUrl}/${params.expenseId}`, config)
+    return response.data
+}
+
+const avgMonthlyChart = async(params) => {
+    const query = queryString.stringify(params)
+    const config = {
+        headers: {Authorization: token}        
+    }
+    const response = await axios.get(`${baseUrl}/monthavg?${query}`, config)
     return response.data
 }
 
@@ -66,5 +74,6 @@ export default {
     categoryPreview, 
     addExpense,
     updateExpense,
-    deleteExpense
+    deleteExpense,
+    avgMonthlyChart
 }

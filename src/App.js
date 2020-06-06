@@ -20,11 +20,11 @@ import expenseService from './Services/expense'
 import Dashboard from './Components/Dashboard'
 import AddExpense from './Components/AddExpense'
 import Expenses from './Components/Expenses'
-
+import Report from './Components/Report/Reports'
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    marginLeft: 900
+    marginLeft: 850
   },
   header: {
     marginLeft: 50,    
@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonLink: {
     color: 'darkslategray'
+  }, 
+  report : {
+    marginLeft: 10
   }
 }))
 
@@ -79,6 +82,9 @@ function App() {
             <Button color='default' variant='contained' className={classes.addButton} startIcon={<AddIcon />}>
               <Link to = '/add' className={classes.buttonLink}> ADD EXPENSES </Link>
             </Button>
+            <Button color='inherit' size='large' className={classes.report}>
+              <Link to = '/report'>REPORT</Link>  
+            </Button>            
             <Button color = 'inherit' className = {classes.button} size = 'large' onClick = {handleLogout}>          
                 <Link to = '/'> LOGOUT  </Link>        
             </Button>  
@@ -116,6 +122,9 @@ function App() {
             </Route>
             <Route path='/add'>
               <AddExpense />
+            </Route>
+            <Route path='/report'>
+              <Report />
             </Route>
             <Route exact path = "/">              
               {user !== null ? <Redirect to="/dashboard" /> : <MainPage />}
