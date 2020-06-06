@@ -43,11 +43,19 @@ const addExpense = async(data) => {
 }
 
 const updateExpense = async(params, data) => {
-    console.log(params)
     const config = {
         headers: {Authorization: token}        
     }
     const response = await axios.put(`${baseUrl}/${params.expenseId}`, data, config)
+    return response.data
+}
+
+const deleteExpense = async(params, data) => {
+    console.log(params)
+    const config = {
+        headers: {Authorization: token}        
+    }
+    const response = await axios.delete(`${baseUrl}/${params.expenseId}`, config)
     return response.data
 }
 
@@ -57,5 +65,6 @@ export default {
     monthPreview, 
     categoryPreview, 
     addExpense,
-    updateExpense
+    updateExpense,
+    deleteExpense
 }

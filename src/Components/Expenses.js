@@ -133,6 +133,13 @@ const Expenses = () => {
         setExpenses(updatedExpenses)
     }
 
+    const handleRemove = expense => {
+        const updatedExpenses = [...expenses]
+        const index = updatedExpenses.indexOf(expense)
+        updatedExpenses.splice(index, 1)
+        setExpenses(updatedExpenses)
+    }
+
 
     return (
         <div className={classes.root}>
@@ -198,7 +205,7 @@ const Expenses = () => {
                             <TextField label="Notes" multiline rows="2" className={classes.textField} value={expense.notes} onChange={handleChange('notes', index)} margin="normal"/>
                             <div className={classes.button}>
                                 <Button color='primary' variant="contained" onClick={() => handleUpdate(index)}className={classes.submit}> Update </Button>
-                                <DeleteExpense />
+                                <DeleteExpense expense={expense} onRemove={handleRemove}/>
                             </div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>             
