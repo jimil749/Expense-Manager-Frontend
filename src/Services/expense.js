@@ -67,6 +67,15 @@ const avgMonthlyChart = async(params) => {
     return response.data
 }
 
+const monthlyExp = async(params) => {
+    const query = queryString.stringify(params)
+    const config = {
+        headers: {Authorization: token}        
+    }
+    const response = await axios.get(`${baseUrl}/monthExp?${query}`, config)
+    return response.data
+}
+
 export default { 
     getAll, 
     setToken, 
@@ -75,5 +84,6 @@ export default {
     addExpense,
     updateExpense,
     deleteExpense,
-    avgMonthlyChart
+    avgMonthlyChart,
+    monthlyExp
 }

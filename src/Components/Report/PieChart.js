@@ -40,7 +40,6 @@ const PieChart = () => {
             async function getResponse() {
                 const response = await expenseService.avgMonthlyChart({firstDay: firstDay, lastDay: lastDay})
                 setExpenses(response)
-                console.log(response)
             }
             getResponse()
         } catch(err) {
@@ -98,7 +97,7 @@ const PieChart = () => {
                     labelRadius={({ innerRadius }) => innerRadius+14}
                     labelComponent={<VictoryLabel angle={0} style={[{
                         fontSize: '11px',
-                        fill: '#0f0f0f'                            
+                        fill: '#0f0f0f' , 
                     },
                     {
                         fontSize: '10px',

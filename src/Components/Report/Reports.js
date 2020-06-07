@@ -4,6 +4,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
 import PieChart from './PieChart'
+import BarChart from './BarChart'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -12,7 +13,10 @@ const useStyles = makeStyles(theme => ({
         margin: 'auto',
         marginTop: 40,
         marginBottom: 40
-    },    
+    }, 
+    seperator: {
+        marginBottom: 36
+    }   
 }))
 
 
@@ -21,6 +25,8 @@ const Reports = () => {
     return (
         <div className={classes.root}>
             <PieChart />
+            <Divider className={classes.seperator} />
+            <BarChart />
         </div>
     )
 }
