@@ -46,7 +46,7 @@ const BarChart = () => {
             setExpense(response)
         } catch (err) {
             console.log(err)
-            alert(`Error Fetching!`)
+            alert(`No Expenses in Current Year`)
         }        
     }
 

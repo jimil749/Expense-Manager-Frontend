@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginLeft: 850
   },
+  loginButton: {
+    marginLeft: 1100
+  },
   header: {
     marginLeft: 50,    
   },
@@ -98,7 +101,7 @@ function App() {
                 Expense Manager
               </a>
             </Typography>   
-            <Button color = 'inherit' className = {classes.button} size = 'large' >          
+            <Button color = 'inherit' className = {classes.loginButton} size = 'large' >          
                 <Link to = '/signin'> Login </Link>          
             </Button>  
           </Toolbar>
