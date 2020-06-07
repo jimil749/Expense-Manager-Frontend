@@ -73,7 +73,7 @@ const MainPage = () => {
                 </Typography>
             </Grid>
             <Grid item xs={6}>
-                <img src={require('../Images/App-image-2.png')} alt="App Screenshot #2"/>
+                <img src={require('../Images/App-image-2.png')} alt="App Screenshot #2" style={{height: '350px', marginLeft: '100px' }}/>
             </Grid>
         </Grid>
         </div>
